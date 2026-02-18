@@ -2,7 +2,7 @@ const STOP_ID = "3014549";
 const REFRESH_INTERVAL = 30000; // 30 sec
 
 async function loadDepartures() {
-  const API_KEY = " 1775f9f1-32b8-48ad-98c8-06b2f6276fa0"; // <-- если нужен ключ, вставь сюда
+  const API_KEY = "1775f9f1-32b8-48ad-98c8-06b2f6276fa0"; // <-- если нужен ключ, вставь сюда
   const url = API_KEY
     ? `https://api.rmv.de/hapi/departureBoard?id=${STOP_ID}&format=json&accessId=${API_KEY}`
     : `https://api.rmv.de/hapi/departureBoard?id=${STOP_ID}&format=json`;
