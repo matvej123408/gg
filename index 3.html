@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Metro Voice Demo</title>
+</head>
+<body>
+
+<h1 id="display">Click Next</h1>
+<button onclick="next()">Next</button>
+
+<script>
+const stops = ["Oxford Circus", "Piccadilly Circus", "Green Park"];
+let i = 0;
+let britishMaleVoice = null;
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  britishMaleVoice = voices.find(v =>
+    v.lang === "en-GB" && v.name.toLowerCase().includes("male")
+  ) || voices.find(v => v.lang === "en-GB");
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+
+function speak(text, cb=null) {
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-GB";
+  if (britishMaleVoice) u.voice = britishMaleVoice;
+  if (cb) u.onend = cb;
+  speechSynthesis.speak(u);
+}
+
+function next() {
+  if (i >= stops.length) return;
+  document.getElementById("display").innerText = stops[i];
+
+  speak("Next station", () => {
+    speak(stops[i], () => {
+      speak("Please mind the gap between the train and the platform");
+    });
+  });
+
+  i++;
+}
+</script>
+</body>
+</html>
