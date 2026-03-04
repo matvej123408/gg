@@ -100,7 +100,7 @@ function speak(text, lang, callback=null) {
 
 const nextStopTranslations = {
 "de-DE":"Nächster Halt",
-"en-US":"Next stop",
+"en-US":"We Are Now Approching",
 "it-IT":"Prossima fermata",
 "fr-FR":"Prochain arrêt",
 "uk-UA":"Наступна зупинка"
@@ -120,19 +120,26 @@ document.getElementById("timeInfo").textContent = "Clicked at " + timeStr;
 
 clickSound.play();
 
-const phrase = nextStopTranslations[langSelect.value] || "Next stop";
+/* 🔹 Робимо правильне метро-оголошення */
+let announcement = "";
 
-/* 🔹 Говоримо зупинку вибраною мовою */
-speak(phrase, langSelect.value, function() {
+/* Якщо вибрана англійська — британський стиль */
+if(langSelect.value === "en-US") {
+    announcement = "Next stop: " + texts[index] + ". Please mind the gap between the train and the platform.";
+    speak(announcement, "en-GB");
+} else {
 
-    speak(texts[index], langSelect.value, function() {
+    const phrase = nextStopTranslations[langSelect.value] || "Next stop";
+    announcement = phrase + ": " + texts[index];
 
-        /* 🔹 Після цього завжди англійська фраза */
-        speak("Please mind the gap between the train and the platform", "en-US");
+    /* Спочатку рідною мовою */
+    speak(announcement, langSelect.value, function(){
+
+        /* Потім британське Mind the gap */
+        speak("Please mind the gap between the train and the platform", "en-GB");
 
     });
-
-});
+}
 
 const li = document.createElement("li");
 li.textContent = texts[index] + " (" + timeStr + ")";
